@@ -4,8 +4,8 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "property_attribute")
-data class PropertyAttribute(
-        @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "property_attribute_id", nullable = false, unique = true) val propertyAttributeId: Long,
-        @Column(name = "property_attribute_name", nullable = false, unique = true) val propertyAttributeName: String,
-        @Column(name = "property_attribute_description", nullable = false) val propertyAttributeDescription: String
-)
+open class PropertyAttribute(
+        @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "property_attribute_id", nullable = false, unique = true) open val propertyAttributeId: Long? = null,
+        @Column(name = "property_attribute_name", nullable = false, unique = true) open val propertyAttributeName: String? = null,
+        @Column(name = "property_attribute_description", nullable = false) open val propertyAttributeDescription: String? = null
+) : BaseEntity()

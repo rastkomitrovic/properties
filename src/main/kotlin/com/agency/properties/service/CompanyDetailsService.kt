@@ -8,8 +8,10 @@ import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import java.util.*
+import javax.transaction.Transactional
 
 @Service
+@Transactional
 class CompanyDetailsService @Autowired constructor(
         private val agencyDetailsRepository: AgencyDetailsRepository,
         private val companyDetailsMapper: CompanyDetailsMapper

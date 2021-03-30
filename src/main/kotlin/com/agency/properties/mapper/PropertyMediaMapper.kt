@@ -4,14 +4,16 @@ import com.agency.properties.dto.PropertyMediaDTO
 import com.agency.properties.entity.PropertyMedia
 import com.agency.properties.util.MediaType
 import org.springframework.stereotype.Service
+import javax.transaction.Transactional
 
 @Service
+@Transactional
 class PropertyMediaMapper {
 
     fun mapToDto(propertyMedia: PropertyMedia): PropertyMediaDTO {
         return PropertyMediaDTO(
                 propertyMediaId = propertyMedia.propertyMediaId,
-                propertyMediaType = MediaType.valueOf(propertyMedia.propertyMediaType),
+                propertyMediaType = propertyMedia.propertyMediaType?.let { MediaType.valueOf(it) },
                 propertyMediaUrl = propertyMedia.propertyMediaUrl
         )
     }

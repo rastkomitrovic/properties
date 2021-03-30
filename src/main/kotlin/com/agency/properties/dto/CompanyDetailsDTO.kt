@@ -4,15 +4,15 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 data class CompanyDetailsDTO(
         @JsonProperty("companyDetailsId")
-        val companyDetailsId: Long,
+        val companyDetailsId: Long?,
         @JsonProperty("companyName")
-        val companyName: String,
+        val companyName: String?,
         @JsonProperty("companyAddress")
-        val companyAddress: String,
+        val companyAddress: String?,
         @JsonProperty("companyEmail")
-        val companyEmail: String,
+        val companyEmail: String?,
         @JsonProperty("companyPhoneNumber")
-        val companyPhoneNumber: String,
+        val companyPhoneNumber: String?,
         @JsonProperty("companyLogoUrl")
-        val companyLogoUrl: String
+        val companyLogoUrl: String?
 )

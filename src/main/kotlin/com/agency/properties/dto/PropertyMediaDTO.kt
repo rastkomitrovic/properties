@@ -1,9 +1,13 @@
 package com.agency.properties.dto
 
 import com.agency.properties.util.MediaType
+import com.fasterxml.jackson.annotation.JsonProperty
 
 data class PropertyMediaDTO(
-        val propertyMediaId: Long,
-        val propertyMediaType: MediaType,
-        val propertyMediaUrl: String
+        @JsonProperty("propertyMediaId")
+        val propertyMediaId: Long?,
+        @JsonProperty("propertyMediaType")
+        val propertyMediaType: MediaType?,
+        @JsonProperty("propertyMediaUrl")
+        val propertyMediaUrl: String?
 )

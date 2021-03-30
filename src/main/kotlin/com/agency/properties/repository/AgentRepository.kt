@@ -9,15 +9,15 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-interface AgentRepository: CrudRepository<Agent,Long>{
+interface AgentRepository : CrudRepository<Agent, Long> {
 
 
     @Query("select a from Agent a where a.agentUsername=:username")
-    fun findByUsernameWithoutPicture(@Param("username") username:String): Optional<Agent>
+    fun findByUsernameWithoutPicture(@Param("username") username: String): Optional<Agent>
 
-    @Query("select a from Agent a left join fetch a.profilePicture where a.agentUsername=:username")
-    fun findByUsernameWithPicture(@Param("username") username:String): Optional<Agent>
+    @Query("select a from Agent a join fetch a.profilePicture where a.agentUsername=:username")
+    fun findByUsernameWithPicture(@Param("username") username: String): Optional<Agent>
 
     @Query("select a.agentUsername from Agent a where a.agentUsername=:username")
-    fun existsByUsername(@Param("username") username: String):String
+    fun findUsername(@Param("username") username: String): Optional<String>
 }
