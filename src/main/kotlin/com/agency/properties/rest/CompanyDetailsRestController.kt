@@ -1,21 +1,33 @@
 package com.agency.properties.rest
 
 import com.agency.properties.dto.CompanyDetailsDTO
+import com.agency.properties.entity.Agent
+import com.agency.properties.entity.ProfilePicture
+import com.agency.properties.repository.AgentRepository
+import com.agency.properties.service.AgentService
 import com.agency.properties.service.CompanyDetailsService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 @RequestMapping("/api/v0/companydetails")
 class CompanyDetailsRestController @Autowired constructor(
-        private val companyDetailsService: CompanyDetailsService
+        private val companyDetailsService: CompanyDetailsService,
+        private val agentService: AgentService
 ) {
 
     @GetMapping("/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findById(@PathVariable("id") id: Long): ResponseEntity<CompanyDetailsDTO> {
+        val profilePicture = ProfilePicture(
+                profilePictureId = 0,
+                profilePictureUrl = "some url"
+        )
+        val agent = Agent(0,"First name","Last name","username","password", Date(),"phone number","email","address","agent number","description",profilePicture)
+        agentService.findByUsernameWithoutPicture("username")
         val details = companyDetailsService.findCompanyDetailsById(id)
         return when (details.isPresent) {
             true -> ResponseEntity(details.get(), HttpStatus.OK)
