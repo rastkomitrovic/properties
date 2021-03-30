@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/v0/agents")
@@ -28,12 +29,12 @@ class AgentRestController @Autowired constructor(
     }
 
     @PostMapping
-    fun saveAgent(@RequestBody agentDTO: AgentDTO):ResponseEntity<AgentDTO>{
+    fun saveAgent(@RequestBody @Valid  agentDTO: AgentDTO):ResponseEntity<AgentDTO>{
         return ResponseEntity(agentService.saveAgent(agentDTO),HttpStatus.OK)
     }
 
     @PutMapping
-    fun updateAgent(@RequestBody agentDTO: AgentDTO):ResponseEntity<AgentDTO>{
+    fun updateAgent(@RequestBody @Valid agentDTO: AgentDTO):ResponseEntity<AgentDTO>{
         return ResponseEntity(agentService.updateAgent(agentDTO),HttpStatus.OK)
     }
 
