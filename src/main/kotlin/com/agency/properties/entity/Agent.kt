@@ -20,5 +20,6 @@ open class Agent(
         @Column(name = "agent_address", nullable = false) open val agentAddress: String? = null,
         @Column(name = "agent_id_number", nullable = false, unique = true) open val agentIdNumber: String? = null,
         @Column(name = "agent_description", nullable = false) open val agentDescription: String? = null,
-        @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY) @JoinColumn(name = "profile_picture_id") open val profilePicture: ProfilePicture?
+        @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "location_id", nullable = false) open val location: Location? = null,
+        @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, orphanRemoval = true) @JoinColumn(name = "profile_picture_id", nullable = true) open val profilePicture: ProfilePicture?
 ) : BaseEntity()

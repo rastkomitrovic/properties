@@ -13,11 +13,14 @@ interface AgentRepository : CrudRepository<Agent, Long> {
 
 
     @Query("select a from Agent a where a.agentUsername=:username")
-    fun findByUsernameWithoutPicture(@Param("username") username: String): Optional<Agent>
+    fun findByUsernameNotLoadLazyEntities(@Param("username") username: String): Optional<Agent>
 
-    @Query("select a from Agent a join fetch a.profilePicture where a.agentUsername=:username")
-    fun findByUsernameWithPicture(@Param("username") username: String): Optional<Agent>
+    @Query("select a from Agent a join fetch a.profilePicture join fetch a.location properties where a.agentUsername=:username")
+    fun findByUsernameLoadLazyEntities(@Param("username") username: String): Optional<Agent>
 
     @Query("select a.agentUsername from Agent a where a.agentUsername=:username")
     fun findUsername(@Param("username") username: String): Optional<String>
+
+    @Query("select a from Agent a join fetch a.profilePicture join fetch a.location where a.agentId=:id")
+    fun findByIdLoadLazyEntities(@Param("id") id: Long): Optional<Agent>
 }

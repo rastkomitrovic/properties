@@ -45,7 +45,7 @@ data class AgentDTO(
 
         @JsonProperty("agentEmail")
         @field:NotNull(message = "Agent's email must not be null!")
-        @field:Email(message = "Agent's email must be in correct format (mailAddres@domain)!")
+        @field:Email(message = "Agent's email must be in correct format (mailAddres@domain.something)!")
         val agentEmail: String?,
 
         @JsonProperty("agentAddress")
@@ -62,6 +62,9 @@ data class AgentDTO(
         @field:NotNull(message = "Agent's description must not be null!")
         @field:Length(min = 10, max = 1000, message = "Agent's description must have between 10 and 1000 characters!")
         val agentDescription: String?,
+
+        @JsonProperty("location")
+        val location: LocationDTO?,
 
         @JsonProperty("profilePicture")
         val profilePicture: ProfilePictureDTO?

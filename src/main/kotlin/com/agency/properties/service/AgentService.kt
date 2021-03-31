@@ -17,32 +17,44 @@ class AgentService @Autowired constructor(
         private val agentMapper: AgentMapper
 ) {
 
-    fun findByUsername(username: String, includeProfilePicture: Boolean): Optional<AgentDTO> {
+    fun findByUsername(username: String, includePictureAndLocation: Boolean): Optional<AgentDTO> {
         return returnAgentDTOFromOptional(
-                when (includeProfilePicture) {
-                    true -> agentRepository.findByUsernameWithPicture(username)
-                    else -> agentRepository.findByUsernameWithoutPicture(username)
+                when (includePictureAndLocation) {
+                    true -> agentRepository.findByUsernameLoadLazyEntities(username)
+                    else -> agentRepository.findByUsernameNotLoadLazyEntities(username)
                 }
         )
     }
 
-    fun saveAgent(agentDTO:AgentDTO):AgentDTO{
-        if(agentDTO.agentId!=null && agentRepository.existsById(agentDTO.agentId!!))
+    fun findById(id: Long, includePictureAndLocation: Boolean): Optional<AgentDTO> {
+        val agent = when (includePictureAndLocation) {
+            true -> agentRepository.findByIdLoadLazyEntities(id)
+            else -> agentRepository.findById(id)
+        }
+        return when (agent.isPresent) {
+            true -> Optional.of(agentMapper.mapToDto(agent.get()))
+            else -> Optional.empty()
+        }
+    }
+
+    fun saveAgent(agentDTO: AgentDTO): AgentDTO {
+        if (agentDTO.agentId != null && agentRepository.existsById(agentDTO.agentId!!))
             throw AgencyException("Agent with the passed id:${agentDTO.agentId} already exists!")
         return agentMapper.mapToDto(agentRepository.save(agentMapper.mapToEntity(agentDTO)))
     }
 
-    fun updateAgent(agentDTO:AgentDTO):AgentDTO{
-        if(agentDTO.agentId!=null && !agentRepository.existsById(agentDTO.agentId!!))
+    fun updateAgent(agentDTO: AgentDTO): AgentDTO {
+        if (agentDTO.agentId != null && !agentRepository.existsById(agentDTO.agentId!!))
             throw AgencyException("Agent with the passed id:${agentDTO.agentId} doesn't exist!")
         return agentMapper.mapToDto(agentRepository.save(agentMapper.mapToEntity(agentDTO)))
     }
 
-    fun deleteAgentById(id:Long){
-        if(!agentRepository.existsById(id))
+    fun deleteAgentById(id: Long) {
+        if (!agentRepository.existsById(id))
             throw AgencyException("Agent with the passed id:${id} doesn't exist")
         agentRepository.deleteById(id)
     }
+
     fun existsByUsername(username: String): Boolean {
         val returnedUsername = agentRepository.findUsername(username)
         return when (returnedUsername.isPresent) {

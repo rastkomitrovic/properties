@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service
 @Service
 class AgentMapper @Autowired constructor(
         private val profilePictureMapper: ProfilePictureMapper,
+        private val locationMapper: LocationMapper,
         private val bCryptPasswordEncoder: BCryptPasswordEncoder
 ) {
 
@@ -26,6 +27,7 @@ class AgentMapper @Autowired constructor(
                 agentAddress = agent.agentAddress,
                 agentIdNumber = agent.agentIdNumber,
                 agentDescription = agent.agentDescription,
+                location = if (Utils.isLazyEntityInitialized(agent.location)) agent.location?.let { locationMapper.mapToDto(it) } else null,
                 profilePicture = if (Utils.isLazyEntityInitialized(agent.profilePicture)) agent.profilePicture?.let { profilePictureMapper.mapToDto(it) } else null
         )
     }
@@ -43,7 +45,16 @@ class AgentMapper @Autowired constructor(
                 agentAddress = agentDTO.agentAddress,
                 agentIdNumber = agentDTO.agentIdNumber,
                 agentDescription = agentDTO.agentDescription,
+                location = agentDTO.location?.let { locationMapper.mapToEntity(it) },
                 profilePicture = agentDTO.profilePicture?.let { profilePictureMapper.mapToEntity(it) }
         )
+    }
+
+    fun mapListToDto(agents: Iterable<Agent>): List<AgentDTO> {
+        return agents.map { mapToDto(it) }
+    }
+
+    fun mapListToEntity(agents: Iterable<AgentDTO>): List<Agent> {
+        return agents.map { mapToEntity(it) }
     }
 }

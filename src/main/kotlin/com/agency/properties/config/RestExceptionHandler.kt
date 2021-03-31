@@ -42,12 +42,12 @@ class RestExceptionHandler : ResponseEntityExceptionHandler() {
 
     @ExceptionHandler(AgencyException::class)
     fun handleAgencyException(ex: AgencyException, webRequest: WebRequest): ResponseEntity<Any> {
-        val apiError = ApiError(HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now(), ex.exceptionMessage,"Custom AgencyException thrown:${ex.stackTraceToString()}", emptyList())
+        val apiError = ApiError(HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now(), ex.exceptionMessage, "Custom AgencyException thrown:${ex.stackTraceToString()}", emptyList())
         return ResponseEntity(apiError, HttpHeaders(), apiError.httpStatus)
     }
 
     override fun handleHttpMessageNotReadable(ex: HttpMessageNotReadableException, headers: HttpHeaders, status: HttpStatus, request: WebRequest): ResponseEntity<Any> {
-        val apiError = ApiError(HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now(),"Request body not readable!", ex.localizedMessage, listOf())
+        val apiError = ApiError(HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now(), "Request body not readable!", ex.localizedMessage, listOf())
         return ResponseEntity(apiError, HttpHeaders(), apiError.httpStatus)
     }
 
