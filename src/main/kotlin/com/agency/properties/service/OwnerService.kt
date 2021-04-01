@@ -1,6 +1,7 @@
 package com.agency.properties.service
 
 import com.agency.properties.dto.OwnerDTO
+import com.agency.properties.entity.Owner
 import com.agency.properties.mapper.OwnerMapper
 import com.agency.properties.repository.OwnerRepository
 import com.agency.properties.util.AgencyException
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
+import java.util.*
 import javax.transaction.Transactional
 
 @Service
@@ -47,6 +49,17 @@ class OwnerService @Autowired constructor(
         return when (loadLazyParams) {
             true -> ownerRepository.findByParamPagingLoadLazyEntities(PageRequest.of(page, size, Sort.by(sort)), param).map { ownerMapper.mapToDto(it) }
             else -> ownerRepository.findByParamPagingNotLoadLazyEntities(PageRequest.of(page, size, Sort.by(sort)), param).map { ownerMapper.mapToDto(it) }
+        }
+    }
+
+    fun findById(id: Long, loadLazyParams: Boolean): Optional<OwnerDTO> {
+        val owner = when (loadLazyParams) {
+            true -> ownerRepository.findByIdLoadLazyEntities(id)
+            else -> ownerRepository.findById(id)
+        }
+        return when (owner.isPresent) {
+            true -> Optional.of(ownerMapper.mapToDto(owner.get()))
+            else -> Optional.empty()
         }
     }
 }

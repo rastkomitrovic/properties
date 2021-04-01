@@ -19,7 +19,7 @@ class AgentRestController @Autowired constructor(
         private val agentService: AgentService
 ) {
 
-    @Operation(summary = "Get an agent by his username.")
+    @Operation(summary = "Gets an agent by his username.")
     @GetMapping("/findByUsername/{username}/{loadLazyParams}")
     fun findUserByUsername(@PathVariable("username") username: String, @PathVariable("loadLazyParams") loadLazyParams: Boolean): ResponseEntity<AgentDTO> {
         val agent = agentService.findByUsername(username, loadLazyParams)
@@ -29,7 +29,7 @@ class AgentRestController @Autowired constructor(
         }
     }
 
-    @Operation(summary = "Get an agent by id.")
+    @Operation(summary = "Gets an agent by id.")
     @GetMapping("/findById/{id}/{loadLazyParams}")
     fun findById(@PathVariable("id") id: Long, @PathVariable("loadLazyParams") loadLazyParams: Boolean): ResponseEntity<AgentDTO> {
         val agent = agentService.findById(id, loadLazyParams)
@@ -39,25 +39,25 @@ class AgentRestController @Autowired constructor(
         }
     }
 
-    @Operation(summary = "Check if the user by provided username exists.")
+    @Operation(summary = "Checks if the user by provided username exists.")
     @GetMapping("/existsByUsername/{username}")
     fun existsByUsername(@PathVariable("username") username: String): ResponseEntity<Boolean> {
         return ResponseEntity(agentService.existsByUsername(username), HttpStatus.OK)
     }
 
-    @Operation(summary = "Save new user.")
+    @Operation(summary = "Saves a new user.")
     @PostMapping
     fun saveAgent(@RequestBody @Valid agentDTO: AgentDTO): ResponseEntity<AgentDTO> {
         return ResponseEntity(agentService.saveAgent(agentDTO), HttpStatus.OK)
     }
 
-    @Operation(summary = "Update existing user.")
+    @Operation(summary = "Updates an existing user.")
     @PutMapping
     fun updateAgent(@RequestBody @Valid agentDTO: AgentDTO): ResponseEntity<AgentDTO> {
         return ResponseEntity(agentService.updateAgent(agentDTO), HttpStatus.OK)
     }
 
-    @Operation(summary = "Delete agent for the provided id.")
+    @Operation(summary = "Deletes an agent for the provided id.")
     @DeleteMapping("/{id}")
     fun deleteAgent(@PathVariable("id") id: Long): ResponseEntity<Any> {
         agentService.deleteAgentById(id)

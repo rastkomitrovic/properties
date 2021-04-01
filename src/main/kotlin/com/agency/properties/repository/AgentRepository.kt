@@ -14,7 +14,7 @@ interface AgentRepository : CrudRepository<Agent, Long> {
     @Query("select a from Agent a where a.agentUsername=:username")
     fun findByUsernameNotLoadLazyEntities(@Param("username") username: String): Optional<Agent>
 
-    @Query("select a from Agent a join fetch a.profilePicture join fetch a.location properties where a.agentUsername=:username")
+    @Query("select a from Agent a join fetch a.profilePicture join fetch a.location where a.agentUsername=:username")
     fun findByUsernameLoadLazyEntities(@Param("username") username: String): Optional<Agent>
 
     @Query("select a.agentUsername from Agent a where a.agentUsername=:username")

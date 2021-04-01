@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
+import java.sql.SQLIntegrityConstraintViolationException
 import java.time.LocalDateTime
 import javax.validation.ConstraintViolationException
 
@@ -47,7 +48,13 @@ class RestExceptionHandler : ResponseEntityExceptionHandler() {
     }
 
     override fun handleHttpMessageNotReadable(ex: HttpMessageNotReadableException, headers: HttpHeaders, status: HttpStatus, request: WebRequest): ResponseEntity<Any> {
-        val apiError = ApiError(HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now(), "Request body not readable!", ex.localizedMessage, listOf())
+        val apiError = ApiError(HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now(), "Request body not readable!", ex.localizedMessage, emptyList())
+        return ResponseEntity(apiError, HttpHeaders(), apiError.httpStatus)
+    }
+
+    @ExceptionHandler(SQLIntegrityConstraintViolationException::class)
+    fun handleSQLIntegrityException(ex: SQLIntegrityConstraintViolationException, webRequest: WebRequest): ResponseEntity<Any> {
+        val apiError = ApiError(HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now(), "SQL EXCEPTION:${ex.message}", ex.stackTraceToString(), emptyList())
         return ResponseEntity(apiError, HttpHeaders(), apiError.httpStatus)
     }
 

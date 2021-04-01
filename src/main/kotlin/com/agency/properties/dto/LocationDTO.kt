@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 data class LocationDTO(
-        @JsonProperty("agentId")
+        @JsonProperty("locationId")
         @field:NotNull(message = "Location's Id must not be null!")
         val locationId: Long?,
 
