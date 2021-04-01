@@ -3,6 +3,7 @@ package com.agency.properties.dto
 import com.agency.properties.util.MediaType
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.constraints.Length
+import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 data class PropertyMediaDTO(
@@ -12,10 +13,12 @@ data class PropertyMediaDTO(
 
         @JsonProperty("propertyMediaType")
         @field:NotNull(message = "Property media's type must not be null!")
+        @field:NotBlank(message = "Property media's type can't be blank!")
         @field:Length(min = 3, max = 15, message = "Property media's type must be between 3 and 15 characters!")
         val propertyMediaType: MediaType?,
 
         @JsonProperty("propertyMediaUrl")
         @field:NotNull(message = "Property media's url must not be null!")
+        @field:NotBlank(message = "Property media's url can't be blank!")
         val propertyMediaUrl: String?
 )

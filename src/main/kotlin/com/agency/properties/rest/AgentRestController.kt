@@ -20,9 +20,9 @@ class AgentRestController @Autowired constructor(
 ) {
 
     @Operation(summary = "Get an agent by his username.")
-    @GetMapping("/findByUsername/{username}/{includePictureAndLocation}")
-    fun findUserByUsername(@PathVariable("username") username: String, @PathVariable("includePictureAndLocation") includePictureAndLocation: Boolean): ResponseEntity<AgentDTO> {
-        val agent = agentService.findByUsername(username, includePictureAndLocation)
+    @GetMapping("/findByUsername/{username}/{loadLazyParams}")
+    fun findUserByUsername(@PathVariable("username") username: String, @PathVariable("loadLazyParams") loadLazyParams: Boolean): ResponseEntity<AgentDTO> {
+        val agent = agentService.findByUsername(username, loadLazyParams)
         return when (agent.isPresent) {
             true -> ResponseEntity(agent.get(), HttpStatus.OK)
             else -> ResponseEntity(HttpStatus.NO_CONTENT)
@@ -30,9 +30,9 @@ class AgentRestController @Autowired constructor(
     }
 
     @Operation(summary = "Get an agent by id.")
-    @GetMapping("/findById/{id}/{includePictureAndLocation}")
-    fun findById(@PathVariable("id") id: Long, @PathVariable("includePictureAndLocation") includePictureAndLocation: Boolean): ResponseEntity<AgentDTO> {
-        val agent = agentService.findById(id, includePictureAndLocation)
+    @GetMapping("/findById/{id}/{loadLazyParams}")
+    fun findById(@PathVariable("id") id: Long, @PathVariable("loadLazyParams") loadLazyParams: Boolean): ResponseEntity<AgentDTO> {
+        val agent = agentService.findById(id, loadLazyParams)
         return when (agent.isPresent) {
             true -> ResponseEntity(agent.get(), HttpStatus.OK)
             else -> ResponseEntity(HttpStatus.NO_CONTENT)

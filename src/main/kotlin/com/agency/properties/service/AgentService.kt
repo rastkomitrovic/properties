@@ -17,17 +17,17 @@ class AgentService @Autowired constructor(
         private val agentMapper: AgentMapper
 ) {
 
-    fun findByUsername(username: String, includePictureAndLocation: Boolean): Optional<AgentDTO> {
+    fun findByUsername(username: String, loadLazyParams: Boolean): Optional<AgentDTO> {
         return returnAgentDTOFromOptional(
-                when (includePictureAndLocation) {
+                when (loadLazyParams) {
                     true -> agentRepository.findByUsernameLoadLazyEntities(username)
                     else -> agentRepository.findByUsernameNotLoadLazyEntities(username)
                 }
         )
     }
 
-    fun findById(id: Long, includePictureAndLocation: Boolean): Optional<AgentDTO> {
-        val agent = when (includePictureAndLocation) {
+    fun findById(id: Long, loadLazyParams: Boolean): Optional<AgentDTO> {
+        val agent = when (loadLazyParams) {
             true -> agentRepository.findByIdLoadLazyEntities(id)
             else -> agentRepository.findById(id)
         }

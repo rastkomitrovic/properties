@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service
 class AgentMapper @Autowired constructor(
         private val profilePictureMapper: ProfilePictureMapper,
         private val locationMapper: LocationMapper,
+        private val roleMapper: RoleMapper,
         private val bCryptPasswordEncoder: BCryptPasswordEncoder
 ) {
 
@@ -27,6 +28,7 @@ class AgentMapper @Autowired constructor(
                 agentAddress = agent.agentAddress,
                 agentIdNumber = agent.agentIdNumber,
                 agentDescription = agent.agentDescription,
+                agentRole = agent.agentRole?.let { roleMapper.mapToDto(it) },
                 location = if (Utils.isLazyEntityInitialized(agent.location)) agent.location?.let { locationMapper.mapToDto(it) } else null,
                 profilePicture = if (Utils.isLazyEntityInitialized(agent.profilePicture)) agent.profilePicture?.let { profilePictureMapper.mapToDto(it) } else null
         )
@@ -45,6 +47,7 @@ class AgentMapper @Autowired constructor(
                 agentAddress = agentDTO.agentAddress,
                 agentIdNumber = agentDTO.agentIdNumber,
                 agentDescription = agentDTO.agentDescription,
+                agentRole = agentDTO.agentRole?.let { roleMapper.mapToEntity(it) },
                 location = agentDTO.location?.let { locationMapper.mapToEntity(it) },
                 profilePicture = agentDTO.profilePicture?.let { profilePictureMapper.mapToEntity(it) }
         )

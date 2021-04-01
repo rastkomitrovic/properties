@@ -1,9 +1,9 @@
 package com.agency.properties.repository
 
-import com.agency.properties.entity.CompanyDetails
+import com.agency.properties.entity.PropertyType
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface AgencyDetailsRepository : CrudRepository<CompanyDetails, Long> {
+interface PropertyTypeRepository : CrudRepository<PropertyType, Long> {
 }
