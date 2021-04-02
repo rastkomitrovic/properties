@@ -6,11 +6,14 @@ import io.swagger.v3.oas.annotations.Operation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
+@Validated
 @RestController
 @RequestMapping("/api/v0/locations")
+@CrossOrigin(originPatterns = ["*"])
 class LocationRestController @Autowired constructor(
         private val locationService: LocationService
 ) {
@@ -42,7 +45,17 @@ class LocationRestController @Autowired constructor(
 
     @Operation(summary = "Saves multiple locations.")
     @PostMapping("/saveMultiple")
-    fun saveAll(@RequestBody list: List<LocationDTO>): ResponseEntity<List<LocationDTO>> {
+    fun saveAll(@RequestBody @Valid list: List<LocationDTO>): ResponseEntity<List<LocationDTO>> {
         return ResponseEntity(locationService.saveAll(list), HttpStatus.OK)
+    }
+
+    @Operation(summary = "Gets a location for the provided id")
+    @GetMapping("/{id}")
+    fun findById(@PathVariable("id") id: Long): ResponseEntity<LocationDTO> {
+        val location = locationService.findById(id)
+        return when (location.isPresent) {
+            true -> ResponseEntity(location.get(), HttpStatus.OK)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
+        }
     }
 }

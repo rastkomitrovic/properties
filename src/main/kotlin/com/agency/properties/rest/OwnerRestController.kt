@@ -12,6 +12,7 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/v0/owners")
+@CrossOrigin(originPatterns = ["*"])
 class OwnerRestController @Autowired constructor(
         private val ownerService: OwnerService
 ) {
@@ -56,7 +57,7 @@ class OwnerRestController @Autowired constructor(
     }
 
     @Operation(summary = "Returns an owner for the provided id.")
-    @GetMapping("/{id}(/{loadLazyParams}")
+    @GetMapping("/{id}/{loadLazyParams}")
     fun findById(@PathVariable("id") id: Long, @PathVariable("loadLazyParams") loadLazyParams: Boolean): ResponseEntity<OwnerDTO> {
         val owner = ownerService.findById(id, loadLazyParams)
         return when (owner.isPresent) {

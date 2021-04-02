@@ -15,6 +15,7 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/v0/agents")
+@CrossOrigin(originPatterns = ["*"])
 class AgentRestController @Autowired constructor(
         private val agentService: AgentService
 ) {

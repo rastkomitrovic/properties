@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
-@RequestMapping("/api/v0/companydetails")
+@RequestMapping("/api/v0/companyDetails")
+@CrossOrigin(originPatterns = ["*"])
 class CompanyDetailsRestController @Autowired constructor(
         private val companyDetailsService: CompanyDetailsService,
         private val agentService: AgentService
