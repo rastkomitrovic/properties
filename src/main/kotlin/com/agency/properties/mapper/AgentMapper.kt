@@ -21,7 +21,7 @@ class AgentMapper @Autowired constructor(
                 agentFirstName = agent.agentFirstName,
                 agentLastName = agent.agentLastName,
                 agentUsername = agent.agentUsername,
-                agentPassword = agent.agentPassword,
+                agentPassword = null,
                 agentDateOfBirth = agent.agentDateOfBirth,
                 agentPhoneNumber = agent.agentPhoneNumber,
                 agentEmail = agent.agentEmail,

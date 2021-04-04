@@ -17,6 +17,13 @@
 	<properties>
 		<java.version>11</java.version>
 		<kotlin.version>1.4.31</kotlin.version>
+		<commons-lang.version>3.8.1</commons-lang.version>
+		<guava.version>29.0-jre</guava.version>
+		<jaxb.version>2.3.3</jaxb.version>
+		<jwt.version>0.9.1</jwt.version>
+		<joda-time.version>2.10.6</joda-time.version>
+		<junit.version>4.12</junit.version>
+		<mockito.version>3.2.4</mockito.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -92,6 +99,37 @@
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-data-rest</artifactId>
 			<version>1.5.2</version>
+		</dependency>
+
+		<!-- FROM HERE IS OAUTH2 and other testing -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>${jwt.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>${joda-time.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+			<version>${jaxb.version}</version>
 		</dependency>
 	</dependencies>
 
