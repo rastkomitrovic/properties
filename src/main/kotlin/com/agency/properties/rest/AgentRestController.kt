@@ -23,7 +23,7 @@ class AgentRestController @Autowired constructor(
     @Operation(summary = "Gets an agent by his username.")
     @GetMapping("/findByUsername/{username}/{loadLazyParams}")
     fun findUserByUsername(@PathVariable("username") username: String, @PathVariable("loadLazyParams") loadLazyParams: Boolean): ResponseEntity<AgentDTO> {
-        val agent = agentService.findByUsername(username, loadLazyParams)
+        val agent = agentService.findByUsername(username, loadLazyParams, false)
         return when (agent.isPresent) {
             true -> ResponseEntity(agent.get(), HttpStatus.OK)
             else -> ResponseEntity(HttpStatus.NO_CONTENT)

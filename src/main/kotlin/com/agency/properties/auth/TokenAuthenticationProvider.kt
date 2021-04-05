@@ -21,7 +21,7 @@ class TokenAuthenticationProvider @Autowired constructor(
     override fun retrieveUser(p0: String?, p1: UsernamePasswordAuthenticationToken?): UserDetails {
         val token =p1?.credentials
         return Optional.ofNullable(token)
-                .flatMap { userAuthenticationService.findByToke(it.toString()) }
+                .flatMap { userAuthenticationService.findByToken(it.toString()) }
                 .orElseThrow{throw UsernameNotFoundException("Can't find user with authentication token: $token")}
     }
 }

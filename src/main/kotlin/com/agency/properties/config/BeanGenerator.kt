@@ -13,4 +13,5 @@ class BeanGenerator {
     fun getPasswordEncoder(): BCryptPasswordEncoder {
         return BCryptPasswordEncoder()
     }
+
 }

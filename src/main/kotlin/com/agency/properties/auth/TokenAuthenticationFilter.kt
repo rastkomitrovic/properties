@@ -14,7 +14,7 @@ import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class TokenAuthenticationFilter(private val requestMatcher: RequestMatcher) : AbstractAuthenticationProcessingFilter(requestMatcher) {
+class TokenAuthenticationFilter(requestMatcher: RequestMatcher) : AbstractAuthenticationProcessingFilter(requestMatcher) {
 
 
     override fun attemptAuthentication(p0: HttpServletRequest?, p1: HttpServletResponse?): Authentication {

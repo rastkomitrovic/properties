@@ -15,13 +15,13 @@ class AgentMapper @Autowired constructor(
         private val bCryptPasswordEncoder: BCryptPasswordEncoder
 ) {
 
-    fun mapToDto(agent: Agent): AgentDTO {
+    fun mapToDto(agent: Agent,mapPassword:Boolean): AgentDTO {
         return AgentDTO(
                 agentId = agent.agentId,
                 agentFirstName = agent.agentFirstName,
                 agentLastName = agent.agentLastName,
                 agentUsername = agent.agentUsername,
-                agentPassword = null,
+                agentPassword = if(mapPassword) agent.agentPassword else null,
                 agentDateOfBirth = agent.agentDateOfBirth,
                 agentPhoneNumber = agent.agentPhoneNumber,
                 agentEmail = agent.agentEmail,
@@ -52,6 +52,7 @@ class AgentMapper @Autowired constructor(
                 profilePicture = agentDTO.profilePicture?.let { profilePictureMapper.mapToEntity(it) }
         )
     }
+
 
     fun mapListToDto(agents: Iterable<Agent>): List<AgentDTO> {
         return agents.map { mapToDto(it) }

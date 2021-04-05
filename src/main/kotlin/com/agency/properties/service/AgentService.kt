@@ -24,12 +24,13 @@ class AgentService @Autowired constructor(
     private val log = LoggerFactory.getLogger(AgentService::class.java)
 
     @Cacheable(AGENTS_BY_USERNAME_CACHE, key = "{#username,#loadLazyParams}")
-    fun findByUsername(username: String, loadLazyParams: Boolean): Optional<AgentDTO> {
+    fun findByUsername(username: String, loadLazyParams: Boolean, mapPassword: Boolean): Optional<AgentDTO> {
         val agent = returnAgentDTOFromOptional(
                 when (loadLazyParams) {
                     true -> agentRepository.findByUsernameLoadLazyEntities(username)
                     else -> agentRepository.findByUsernameNotLoadLazyEntities(username)
-                }
+                },
+                mapPassword
         )
         log.info("Storing in cache: $AGENTS_BY_USERNAME_CACHE for key: {$username,$loadLazyParams}")
         return agent
@@ -41,7 +42,8 @@ class AgentService @Autowired constructor(
                 when (loadLazyParams) {
                     true -> agentRepository.findByIdLoadLazyEntities(id)
                     else -> agentRepository.findById(id)
-                }
+                },
+                false
         )
         log.info("Storing in cache: $AGENTS_BY_ID_CACHE kor key: {$id,$loadLazyParams}")
         return agent
@@ -51,7 +53,7 @@ class AgentService @Autowired constructor(
     fun saveAgent(agentDTO: AgentDTO): AgentDTO {
         if (agentDTO.agentId != null && agentRepository.existsById(agentDTO.agentId!!))
             throw AgencyException("Agent with the passed id:${agentDTO.agentId} already exists!")
-        val agent = agentMapper.mapToDto(agentRepository.save(agentMapper.mapToEntity(agentDTO)))
+        val agent = agentMapper.mapToDto(agentRepository.save(agentMapper.mapToEntity(agentDTO)), false)
         log.info("Evicting from caches: $AGENTS_BY_USERNAME_CACHE, $AGENTS_BY_ID_CACHE and $AGENTS_EXISTING_BY_USERNAME_CACHE all entries")
         return agent
     }
@@ -60,7 +62,7 @@ class AgentService @Autowired constructor(
     fun updateAgent(agentDTO: AgentDTO): AgentDTO {
         if (agentDTO.agentId != null && !agentRepository.existsById(agentDTO.agentId!!))
             throw AgencyException("Agent with the passed id:${agentDTO.agentId} doesn't exist!")
-        val agent = agentMapper.mapToDto(agentRepository.save(agentMapper.mapToEntity(agentDTO)))
+        val agent = agentMapper.mapToDto(agentRepository.save(agentMapper.mapToEntity(agentDTO)), false)
         log.info("Evicting all from caches: $AGENTS_BY_USERNAME_CACHE, $AGENTS_BY_ID_CACHE and $AGENTS_EXISTING_BY_USERNAME_CACHE")
         return agent
     }
@@ -83,9 +85,9 @@ class AgentService @Autowired constructor(
         }
     }
 
-    private fun returnAgentDTOFromOptional(agent: Optional<Agent>): Optional<AgentDTO> {
+    private fun returnAgentDTOFromOptional(agent: Optional<Agent>, mapPassword: Boolean): Optional<AgentDTO> {
         return when (agent.isPresent) {
-            true -> Optional.of(agentMapper.mapToDto(agent.get()))
+            true -> Optional.of(agentMapper.mapToDto(agent.get(), mapPassword))
             else -> Optional.empty()
         }
     }
